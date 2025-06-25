@@ -75,7 +75,7 @@ export default function ProTool() {
 
       // Prepare form data
       const formData = new FormData();
-      formData.append('resume', uploadedFile);
+      //formData.append('resume', uploadedFile);
       formData.append('jobDescription', jobDescription);
       // Optionally add skills if you have a field for it
       // formData.append('skills', skills);

@@ -31,19 +31,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         messages: [
             {
               role: 'system',
-              content: `You are a professional resume strategist who helps job seekers craft compelling, brief, and highly tailored 2–3 line introductions for their resumes. Keep it concise, focused on alignment with the job, and avoid listing all skills — only highlight the ones that matter for the role.`
+              content: `You are a professional resume strategist. Your job is to craft concise, 2–3 line resume introductions that highlight the candidate’s strongest alignment with the specific job. Skip general traits and avoid listing all skills. Mention only what directly reinforces the candidate’s fit for the role.`
             },
             {
               role: 'user',
-              content: `Generate a 2–3 line resume introduction tailored to the following job description and candidate's relevant skills.
-          
-          Job Description:
-          ${jobDescription}
-          
-          Candidate's Skills and Projects:
-          ${skillsAndProjects}
-          
-          Only output a 2–3 line professional resume introduction. Prioritize conciseness, avoid filler words like 'enthusiastic' or 'passionate'. Adjust the tone to match the voice of the job description — whether formal, innovative, or technical. Only mention projects or technologies if they directly reinforce the candidate's fit for this specific role.
+              content: `Write a professional 2–3 line resume introduction tailored to the job description and candidate’s profile below.
+
+            Job Description:
+            ${jobDescription}
+
+            Candidate's Relevant Skills and Projects:
+            ${skillsAndProjects}
+
+            Only include what strengthens the match.Only output a 2–3 line professional resume introduction. Prioritize conciseness, avoid filler words like 'enthusiastic' or 'passionate'. Adjust the tone to match the voice of the job description — whether formal, innovative, or technical. Only mention projects or technologies if they directly reinforce the candidate's fit for this specific role.
 `
             }
           ]

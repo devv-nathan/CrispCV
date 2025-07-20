@@ -3,12 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Zap, User, FileText, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [showSupport, setShowSupport] = useState(false);
 
   const navItems = [
     { href: '/', label: 'Home', icon: FileText },
@@ -18,48 +20,77 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600">
-              <FileText className="h-4 w-4 text-white" />
+    <>
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center">
+        <div
+          className={cn(
+            'flex items-center gap-2 px-4 py-2 w-full max-w-3xl',
+            'rounded-full',
+            'bg-white/80 shadow-xl border border-gray-200 backdrop-blur-lg pointer-events-auto',
+          )}
+          style={{
+            boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)',
+            margin: '0 auto',
+          }}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2 font-extrabold text-lg px-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-2xl bg-gray-100">
+              {/* CrispCV SVG Logo (updated) */}
+              <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 24c0-4 3.2-8 8-8h6" stroke="#000" strokeWidth="2.5" strokeLinecap="round"/>
+                <path d="M22 26l3 3 6-6" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              ResumeAI
+            <span className="text-xl font-bold text-black" style={{ fontFamily: 'var(--font-heading)' }}>
+              CrispCV
             </span>
           </Link>
-
-          <div className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => {
-              const Icon = item.icon;
+          {/* Nav Items */}
+          <div className="flex-1 flex items-center justify-center gap-2">
+            {navItems.slice(1, 4).map((item) => {
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-2xl text-sm font-medium transition-colors hover:bg-muted",
-                    pathname === item.href && "bg-muted"
+                    'px-4 py-2 rounded-full text-base font-medium transition-colors',
+                    pathname === item.href ? 'font-bold text-black' : 'text-black',
+                    'hover:bg-gray-100',
                   )}
+                  style={{ fontWeight: pathname === item.href ? 700 : 500, background: 'none' }}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
+                  {item.label}
                 </Link>
               );
             })}
           </div>
-
-          <div className="flex items-center space-x-4">
-            <ThemeToggle />
-            <Button 
-              asChild 
-              className="rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
-            >
-              <Link href="/pro-tool">Get Started</Link>
-            </Button>
+          {/* Support Me Button */}
+          <Button
+            className="rounded-full bg-black hover:bg-gray-900 text-white px-7 py-3 text-base font-semibold shadow-none"
+            style={{ fontWeight: 700 }}
+            onClick={() => setShowSupport(true)}
+          >
+            Support Me
+          </Button>
+        </div>
+      </nav>
+      {/* Support Modal */}
+      {showSupport && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setShowSupport(false)}>
+          <div className="bg-white rounded-3xl shadow-2xl p-0 max-w-lg w-full flex flex-col items-center relative overflow-hidden" onClick={e => e.stopPropagation()}>
+            <button className="absolute top-4 right-4 text-gray-400 hover:text-black text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full bg-black/90 hover:bg-black z-10" onClick={() => setShowSupport(false)} aria-label="Close">×</button>
+            <div className="w-full flex flex-col items-center justify-center pt-6">
+              <Image src="/upi.jpg" alt="UPI QR" width={160} height={160} className="object-cover w-40 h-40 rounded-2xl" />
+            </div>
+            <div className="p-4 w-full flex flex-col items-center justify-center">
+              <h2 className="text-2xl font-bold mb-3 mt-2">Support CrispCV</h2>
+              <p className="text-gray-700 mb-2 text-center">Maintaining and running CrispCV costs real money (APIs, hosting, etc). If you find it useful, consider supporting me—every bit helps keep the project alive and free for all. Thank you!</p>
+              <Button className="rounded-full bg-black hover:bg-gray-900 text-white px-6 py-2 mt-4" onClick={() => setShowSupport(false)}>Close</Button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 }

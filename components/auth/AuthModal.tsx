@@ -51,9 +51,9 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <Card className="w-full max-w-md mx-4">
+      <Card className="w-full max-w-md mx-4 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200" style={{ fontFamily: 'var(--font-body)' }}>
         <CardHeader>
-          <CardTitle className="flex items-center">
+          <CardTitle className="flex items-center text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
             <User className="h-5 w-5 mr-2" />
             {isSignUp ? 'Create Account' : 'Sign In'}
           </CardTitle>
@@ -70,7 +70,8 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   placeholder="your@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 rounded-2xl font-medium"
+                  style={{ fontFamily: 'var(--font-body)' }}
                   required
                 />
               </div>
@@ -85,20 +86,22 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 rounded-2xl font-medium"
+                  style={{ fontFamily: 'var(--font-body)' }}
                   required
                 />
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <Button type="submit" disabled={loading} className="w-full">
+              <Button type="submit" disabled={loading} className="w-full rounded-2xl bg-black hover:bg-gray-900 text-white font-bold" style={{ fontFamily: 'var(--font-body)' }}>
                 {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
               </Button>
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="w-full"
+                className="w-full rounded-2xl font-medium"
+                style={{ fontFamily: 'var(--font-body)' }}
               >
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </Button>
@@ -106,7 +109,8 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="w-full"
+                className="w-full rounded-2xl border border-gray-200 font-medium"
+                style={{ fontFamily: 'var(--font-body)' }}
               >
                 Cancel
               </Button>

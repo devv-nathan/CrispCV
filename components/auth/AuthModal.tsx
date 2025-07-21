@@ -37,7 +37,11 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       }
       onClose();
     } catch (error: any) {
-      toast.error(error.message);
+      if (error.message === 'Email not confirmed') {
+        toast.error('Please confirm your email address. Check your inbox for a confirmation link.');
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }

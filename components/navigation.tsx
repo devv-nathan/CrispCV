@@ -7,10 +7,14 @@ import { Zap, User, FileText, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useSupabase } from '@/hooks/useSupabase';
+import AuthModal from '@/components/auth/AuthModal';
 
 export default function Navigation() {
   const pathname = usePathname();
   const [showSupport, setShowSupport] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, signOut } = useSupabase();
 
   const navItems = [
     { href: '/', label: 'Home', icon: FileText },
@@ -73,6 +77,25 @@ export default function Navigation() {
           >
             Support Me
           </Button>
+          
+          {/* Auth Button */}
+          {user ? (
+            <Button
+              variant="outline"
+              className="rounded-full border border-gray-200 text-black px-4 py-2 text-sm font-medium"
+              onClick={() => signOut()}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="rounded-full border border-gray-200 text-black px-4 py-2 text-sm font-medium"
+              onClick={() => setShowAuthModal(true)}
+            >
+              Sign In
+            </Button>
+          )}
         </div>
       </nav>
       {/* Support Modal */}
@@ -91,6 +114,8 @@ export default function Navigation() {
           </div>
         </div>
       )}
+      
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
   );
 }

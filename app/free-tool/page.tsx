@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import { Copy, Sparkles, ArrowRight, Loader2, CheckCircle, Zap, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useSupabase } from '@/hooks/useSupabase';
+import AuthModal from '@/components/auth/AuthModal';
 
 export default function FreeTool() {
   const [skillsAndProjects, setSkillsAndProjects] = useState('');
@@ -18,6 +20,8 @@ export default function FreeTool() {
   const [intro, setIntro] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user } = useSupabase();
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -32,6 +36,24 @@ export default function FreeTool() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong');
       setIntro(data.intro);
+      
+      // Save generation to database if user is logged in
+      if (user) {
+        try {
+          await fetch('/api/save-generation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              jobDescription,
+              skillsAndProjects,
+              generatedIntro: data.intro,
+              userId: user.id,
+            }),
+          });
+        } catch (err) {
+          console.error('Failed to save generation:', err);
+        }
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -138,6 +160,15 @@ export default function FreeTool() {
                         <Copy className="mr-2 h-4 w-4" />
                         Copy to Clipboard
                       </Button>
+                      {!user && (
+                        <Button 
+                          onClick={() => setShowAuthModal(true)}
+                          variant="outline"
+                          className="rounded-2xl border border-gray-200 text-black font-bold text-base"
+                        >
+                          Save History
+                        </Button>
+                      )}
                       <Button 
                         asChild
                         className="rounded-2xl bg-black hover:bg-gray-900 text-white font-bold text-base"
@@ -182,6 +213,8 @@ export default function FreeTool() {
           </Card>
         </motion.div>
       </div>
+      
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
   );
 }

@@ -100,7 +100,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="button"
                 variant="ghost"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="w-full rounded-2xl font-medium"
+                className="w-full rounded-2xl font-medium text-gray-600"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
@@ -109,7 +109,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="w-full rounded-2xl border border-gray-200 font-medium"
+                className="w-full rounded-2xl border border-gray-200 font-medium text-gray-600"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
                 Cancel
